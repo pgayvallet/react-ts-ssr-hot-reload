@@ -4,11 +4,13 @@ import React from 'react';
 import fs from 'fs';
 import { renderToString } from 'react-dom/server';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import { Request, Response } from 'express';
 import { HelmetProvider, FilledContext } from 'react-helmet-async';
 import { StaticRouter } from 'react-router-dom';
 
 import App from 'components/App';
+import { theme } from '../common/theme';
 import config from './config';
 
 // Why `JSON.parse()`: https://www.youtube.com/watch?v=ff4fgQxPaO0
@@ -29,27 +31,34 @@ if (!config.isDev) {
   extractor = new ChunkExtractor({ statsFile });
 }
 
-
 export default async (req: Request, res: Response): Promise<void> => {
   if (config.isDev) {
     extractor = new ChunkExtractor({ statsFile });
   }
-  const helmetContext: FilledContext = { helmet: null };
+  const helmetContext: FilledContext = { helmet: null } as any;
+  const sheets = new ServerStyleSheets();
 
   const content = renderToString(
-    <ChunkExtractorManager extractor={extractor}>
-      <HelmetProvider context={helmetContext}>
-        <StaticRouter location={req.url} context={{}}>
-          <App />
-        </StaticRouter>
-      </HelmetProvider>
-    </ChunkExtractorManager>
+    sheets.collect(
+      <ChunkExtractorManager extractor={extractor}>
+        <HelmetProvider context={helmetContext}>
+          <StaticRouter location={req.url} context={{}}>
+            <ThemeProvider theme={theme}>
+              <App />
+            </ThemeProvider>
+          </StaticRouter>
+        </HelmetProvider>
+      </ChunkExtractorManager>
+    )
   );
+
   const { helmet } = helmetContext;
+  const inlineStyles = sheets.toString();
 
   res.status(200).send(
     generateHtml({
       content,
+      inlineStyles,
       styleTags: extractor.getStyleTags(),
       scriptTags: extractor.getScriptTags(),
       title: helmet.title.toString(),
@@ -64,6 +73,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 const generateHtml = ({
   content = '',
   title = '',
+  inlineStyles = '',
   meta = '',
   link = '',
   bodyAttributes = '',
@@ -79,6 +89,7 @@ const generateHtml = ({
   ${meta}
   ${link}
   ${styleTags}
+  <style id="jss-server-side">${inlineStyles}</style>
 </head>
 <body ${bodyAttributes}>
   <div id="react-view">${content}</div>

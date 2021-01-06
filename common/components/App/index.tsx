@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Button from '@material-ui/core/Button';
 
 import LazyLoadable from 'components/Lazy/loadable';
 import ErrorBoundary from './ErrorBoundary';
@@ -20,9 +21,9 @@ const App: React.FunctionComponent = () => {
         {isLoadableComponentShown ? (
           <LazyLoadable />
         ) : (
-          <button className={classes.button} onClick={showLoadableComponent}>
+          <Button variant="contained" color="primary"  onClick={showLoadableComponent}>
             Load lazy component
-          </button>
+          </Button>
         )}
       </ErrorBoundary>
     </div>

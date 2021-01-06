@@ -1,9 +1,9 @@
-import express from 'express'
-import path from 'path'
+import express from 'express';
+import path from 'path';
 
-import render from './render'
+import render from './render';
 
-const staticPath = path.join(__dirname, '..', 'static')
+const staticPath = path.join(__dirname, '..', 'static');
 
 const server = express()
   .disable('x-powered-by')
@@ -11,11 +11,11 @@ const server = express()
   .use('/static', express.static(staticPath))
   .get('*', async (req, res) => {
     try {
-      await render(req, res)
+      await render(req, res);
     } catch (error) {
-      res.sendStatus(500)
-      console.log('[frontend] error in server/render', error)
+      res.sendStatus(500);
+      console.log('[frontend] error in server/render', error);
     }
-  })
+  });
 
-export default server
+export default server;
