@@ -14,6 +14,7 @@
     "build:client-prod": "cross-env BABEL_ENV=client-prod NODE_ENV=production webpack --config webpack/client-prod.js",
     "build:server-dev": "cross-env BABEL_ENV=server webpack --config webpack/server-dev.js",
     "build:server-prod": "cross-env BABEL_ENV=server NODE_ENV=production webpack --config webpack/server-prod.js",
+    "start:server-dev": "nodemon ./server-dev-dist/server.js",
     "tsc": "tsc",
     "lint": "eslint --ext .ts,.tsx client/ common/ server/",
     "test": "cross-env BABEL_ENV=test jest --coverage --config jest/jest.config.js"
@@ -31,7 +32,8 @@
     "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-helmet-async": "^1.0.6"
+    "react-helmet-async": "^1.0.6",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -54,6 +56,7 @@
     "@types/node": "^10.17.24",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.7",
     "@types/react-test-renderer": "^16.9.2",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^3.0.0",
@@ -74,7 +77,9 @@
     "jest": "^26.0.1",
     "lint-staged": "^9.5.0",
     "mini-css-extract-plugin": "^0.9.0",
+    "nodemon": "^2.0.7",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "prettier": "^2.2.0",
     "react-test-renderer": "^16.13.1",
     "style-loader": "^1.2.1",
     "typescript": "~3.7.0",

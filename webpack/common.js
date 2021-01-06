@@ -1,7 +1,7 @@
-const path = require('path')
+const path = require('path');
 
-const rootPath = path.join(__dirname, '..')
-const prodPublicPath = '/static/dist/'
+const rootPath = path.join(__dirname, '..');
+const prodPublicPath = '/static/dist/';
 
 module.exports = {
   serverProdOutputPath: path.resolve(rootPath, 'server-prod-dist'),
@@ -28,7 +28,7 @@ module.exports = {
   resolve: {
     alias: {
       // allows for imports like "import App from 'components/App'" instead of '../../components/App'
-      'components': path.join(rootPath, 'common/components/'), // keep in sync with `tsconfig.json`
+      components: path.join(rootPath, 'common/components/'), // keep in sync with `tsconfig.json`
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
@@ -41,4 +41,4 @@ module.exports = {
       /\.(css|css\?global|scss|sass|sss|less)$/,
     ],
   },
-}
+};
